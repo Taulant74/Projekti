@@ -1,8 +1,11 @@
 <!DOCTYPE html>
-<head>    
+<html>
+
+<head>
     <title>Login/Register Form</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="form-container" onsubmit="return validateForm()">
         <h2 class="teksti"><b>Login/Register</b></h2>
@@ -13,7 +16,7 @@
             <div id="loginErrorMessage" class="error-message"></div>
         </form>
         <p class="or"><b>or</b></p>
-        <form id="registerForm" style="display: none;">
+        <form id="registerForm" style="display: none;" onsubmit="return submitRegistration()">
             <input type="text" placeholder="Full Name" id="fullName" required>
             <input type="email" placeholder="Email" id="email" required>
             <input type="password" placeholder="Password" id="regPassword" required>
@@ -24,7 +27,8 @@
                 <option value="other">Tjetër</option>
             </select>
             <input type="date" id="birthdate" required>
-            <button type="button" onclick="submitRegistration()">Regjistrohuni</button>
+            <button type="submit"><b>Regjistrohuni</b></button>
+            <!-- Change the type to "submit" -->
             <div id="registerErrorMessage" class="error-message"></div>
         </form>
         <p id="toggleText"><b>Nuk ke një llogari?</b> <a href="#" onclick="toggleForm()"><b>Regjistrohu</b></a></p>
@@ -62,10 +66,10 @@
                 return;
             }
 
-            window.location.href = 'TestHeader.html';
+            window.location.href = 'Main.html';
         }
 
-        function validateForm() {
+        function submitRegistration() {
             var fullName = document.getElementById('fullName').value;
             var email = document.getElementById('email').value;
             var password = document.getElementById('regPassword').value;
@@ -75,44 +79,27 @@
 
             if (!fullName || !email || !password || !gender || !birthdate) {
                 registerErrorMessage.textContent = 'Shtypni të gjitha të dhënat.';
-                return;
-            }
-
-            var fullNameRegex = /^[a-zA-Z\s]+$/;
-            if (!fullNameRegex.test(name)) {
-                alert('Please enter a valid name.');
-            }
-
-            var emailRegex = /^[^\s@]+@[^\s@]+.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
                 return false;
             }
 
-            if (email.indexOf('@gmail.com') === -1) {
-                registerErrorMessage.textContent = 'Emaili duhet të përmbajë @gmail.com.';
-                return;
+            var fullNameRegex = /^[a-zA-Z\s]+$/;
+            if (!fullNameRegex.test(fullName)) {
+                registerErrorMessage.textContent = 'Ju lutem vendosni një emër të vlefshëm.';
+                return false;
             }
 
-            function validatePassword(password) {
-                var passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,}$/;
-                if (!validatePassword(password)) {
-                    registerErrorMessage.textContent = 'Passwordi duhet të përmbajë të paktën 8 karaktere, të filloj me shkronjë të madhe, dhe të përfshijë një karakter special.';
-                    return false;
-                }
+            if (!validatePassword(password)) {
+                return false;
             }
 
-            var birthdateInput = new Date(birthdate);
-            var currentDate = new Date();
-            var age = currentDate.getFullYear() - birthdateInput.getFullYear();
-
-            if (age < 18) {
-                alert('Ju duhet te jeni 18 vjeq ose me te vjeter');
-                return;
-            }
-            window.location.href = 'TestHeader.html';
+            window.location.href = 'Main.html';
+            return false; 
         }
 
-
+        function validatePassword(password) {
+            var passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,}$/;
+            return passwordRegex.test(password);
+        }
     </script>
 </body>
 
